@@ -11,10 +11,10 @@ export default class FilmotekaApiService {
     this.page = 1;
   }
   async fetchResults() {
-    const urlPopular = `${BASE_URL}trending/all/day?api_key=${API_KEY}&page=${this.page}`;
+    const urlPopular = `${BASE_URL}trending/movie/day?api_key=${API_KEY}&page=${this.page}`;
     const response = await fetch(urlPopular);
     const moviesLists = await response.json();
-    const {results} = moviesLists;
+    const { results } = moviesLists;
     return results;
   }
   async fetchSearch(movies) {
@@ -28,17 +28,14 @@ export default class FilmotekaApiService {
     const urlSearch = `${BASE_URL}movie/${movieId}?api_key=${API_KEY}`;
     const response = await fetch(urlSearch);
     const movieData = await response.json();
-    console.log(movieData);
     const {
-      
-        title,
-        overview,
-        vote_average,
-        genres,
-        poster_path,
-        release_date,
-        original_name,
-      
+      title,
+      overview,
+      vote_average,
+      genres,
+      poster_path,
+      release_date,
+      original_name,
     } = movieData;
     const adapterResult = {
       title: title || original_name,
@@ -54,8 +51,7 @@ export default class FilmotekaApiService {
     const urlSearch = `${BASE_URL}movie/${movieId}/credits?api_key=${API_KEY}&language=en-US`;
     const response = await fetch(urlSearch);
     const movieData = await response.json();
-    console.log(movieData);
-    return movieData;
+       return movieData;
   }
   async fetchReviews(movieId) {
     const urlSearch = `${BASE_URL}movie/${movieId}/reviews?api_key=${API_KEY}`;

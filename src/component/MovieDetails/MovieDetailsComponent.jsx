@@ -7,11 +7,11 @@ const MovieDetailsComponent = ({
   year,
 }) => {
   return (
-    <div>
-      <div>
-        <img src={urlImg} alt={`Poster ${title}`} />
+    <div className="thumb">
+      <div className="thumb__container">
+        <img className="thumb__img"src={urlImg} alt={`Poster ${title}`} />
       </div>
-      <div>
+      <div className="descr">
         <h2>
           {title}({year})
         </h2>

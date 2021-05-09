@@ -8,7 +8,6 @@ class Home extends Component {
   };
   async componentDidMount() {
     const trendingMovies = await filmotekaApiService.fetchResults();
-    console.log(trendingMovies);
     this.setState(() => ({ movies: trendingMovies }));
   }
   render() {

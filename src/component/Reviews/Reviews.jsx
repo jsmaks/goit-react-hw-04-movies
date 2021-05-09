@@ -5,9 +5,8 @@ class Reviews extends Component {
     reviews: [],
   };
   async componentDidMount() {
-    console.log(this.props);
     const response = await filmotekaApiService.fetchReviews(this.props.movieId);
-    this.setState({ reviews: [...response] });
+    this.setState({ reviews: [...response.results] });
   }
 
   render() {
