@@ -23,22 +23,20 @@ class MovieDetails extends Component {
   handleGoBack = () => {
     const { history, location } = this.props;
     const { state } = location;
-
-    if (!state?.from) {
-      history.push('/');
-      return;
+    if (state && state.from) {
+      return history.push(state.from);
     }
 
-    history.push(state.from);
+    history.push('/');
   };
   render() {
-   
-    const { path, url } = this.props.match;
+    const { url } = this.props.match;
+    const { location, match } = this.props;
     const { title, overview, score, genres, img, year, movieId } = this.state;
     return (
       <div>
         <button type="button" onClick={this.handleGoBack}>
-          Вернуться назад 
+          Вернуться назад
         </button>
         <MovieDetailsComponent
           title={title}
@@ -51,10 +49,24 @@ class MovieDetails extends Component {
         <h2>Additional information</h2>
         <ul>
           <li>
-            <NavLink to={`${url}/cast`}>Cast</NavLink>
+            <NavLink
+              to={{
+                pathname: `${match.url}/cast`,
+                state: { from: `${location.state.from}` },
+              }}
+            >
+              Cast
+            </NavLink>
           </li>
           <li>
-            <NavLink to={`${url}/reviews`}>Reviews</NavLink>
+            <NavLink
+              to={{
+                pathname: `${match.url}/reviews`,
+                state: { from: `${location.state.from}` },
+              }}
+            >
+              Reviews
+            </NavLink>
           </li>
         </ul>
         <Route

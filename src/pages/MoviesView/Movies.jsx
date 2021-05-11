@@ -4,34 +4,40 @@ import filmotekaApiService from '../../api/getApiClass';
 
 class Movies extends Component {
   state = {
-    searchQuery: '',
-    movies: [],
     query: '',
+    movies: [],
   };
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.searchQuery !== this.state.searchQuery) {
-      this.fetchMovie();
+
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps && this.state.query) {
+      this.fetchMovie(this.getQuery(this.props));
     }
   }
+  componentDidMount() {
+    const query = this.getQuery(this.props);
+    if (!query) return;
+    this.fetchMovie(query);
+  }
+  getQuery(props) {
+    const data = props.location.search;
+    const searchQuery = new URLSearchParams(data);
+    return searchQuery.get('query');
+  }
 
-  async fetchMovie() {
-    const { searchQuery } = this.state;
-    const movie = await filmotekaApiService.fetchSearch(searchQuery);
+  async fetchMovie(movieQuery) {
+    const movie = await filmotekaApiService.fetchSearch(movieQuery);
     this.setState({ movies: movie.results });
   }
 
-  onChangeQuery = query => {
-    this.setState({
-      searchQuery: query,
-      currentPage: 1,
-      error: null,
+  onChangeQuery = () => {
+    this.props.history.push({
+      search: `query=${this.state.query}`,
     });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    const { query } = this.state;
-    this.onChangeQuery(query);
+    this.onChangeQuery();
   };
 
   handleChange = e => {
@@ -40,9 +46,7 @@ class Movies extends Component {
       [name]: value,
     });
   };
-  reset = () => {
-    this.setState({ name: '' });
-  };
+
   render() {
     const { movies, query } = this.state;
     return (
